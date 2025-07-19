@@ -1,0 +1,37 @@
+.playingCardContainer {
+  position: relative;
+  border: 1px solid #000;
+  border-radius: 5px;
+  margin: 30px;
+  aspect-ratio: 57/89;
+  height: 200px;
+  background-color: #fff;
+  color: black;
+}
+
+.corner {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.2em;
+  line-height: 1;
+}
+
+.topCorner {
+  top: 5px;
+  left: 5px;
+}
+
+.bottomCorner {
+  bottom: 5px;
+  right: 5px;
+  transform: rotate(180deg);
+}
+
+.suitIconsContainer {
+  font-size: 20px;
+  display: flex;
+  margin: 30px;
+  justify-content: space-between;
+}
