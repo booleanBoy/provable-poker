@@ -5,29 +5,59 @@ export type PlayingCardType = {
   suit: "♠" | "♥" | "♦" | "♣";
 };
 
-const SideSuitIcons = ({
-  suitIcon,
-  iconCount,
-}: {
-  suitIcon: PlayingCardType["suit"];
-}) => {
+const SideSuitIcons = ({ card }: { card: PlayingCardType }) => {
+  const rankMap: Record<string, number> = { J: 11, Q: 12, K: 13, A: 1 };
+  const num = rankMap[card.rank] ?? parseInt(card.rank, 10);
+  const iconCount =
+    num <= 3 ? 0 : num <= 5 ? 2 : num <= 8 ? 3 : num <= 10 ? 4 : 0;
   return (
-    <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
-      {suitIcon}
+    <div
+      style={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
+      {new Array(iconCount).fill(null).map(() => (
+        <div>{card.suit}</div>
+      ))}
     </div>
   );
 };
-const CenterSuitIcons = ({
-  suitIcon,
-  iconCount,
-}: {
-  suitIcon: PlayingCardType["suit"];
-  iconCount: Array<boolean>;
-}) => {
+const CenterSuitIcons = ({ card }: { card: PlayingCardType }) => {
+  const rankMap: Record<string, number> = { J: 11, Q: 12, K: 13, A: 1 };
+  const num = rankMap[card.rank] ?? parseInt(card.rank, 10);
+  const centerCalced =
+    num === 1 || num === 5 || num === 9
+      ? { icons: [true], justification: "center" }
+      : num === 2
+      ? { icons: [true, true], justification: "space-between" }
+      : num === 8 || num === 10
+      ? { icons: [true, true], justification: "space-around" }
+      : num === 3
+      ? { icons: [true, true, true], justification: "space-between" }
+      : num === 7
+      ? { icons: [true, false], justification: "space-around" }
+      : null;
+
+  if (!centerCalced) {
+    return <div></div>;
+  }
+
   return (
-    <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
-      {iconCount.map((val) => (
-        <div style={{ visibility: val ? "visible" : "hidden" }}>{suitIcon}</div>
+    <div
+      style={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: centerCalced.justification,
+      }}
+    >
+      {centerCalced.icons.map((val) => (
+        <div style={{ visibility: val ? "visible" : "hidden" }}>
+          {card.suit}
+        </div>
       ))}
     </div>
   );
@@ -36,32 +66,6 @@ const CenterSuitIcons = ({
 const PlayingCard = ({ card }: { card: PlayingCardType }) => {
   const suitColour = card.suit === "♥" || card.suit === "♦" ? "red" : "black";
 
-  function getIconColumnCounts(rank: string) {
-    // Convert rank to number, handle face cards
-    const rankMap: Record<string, number> = { J: 11, Q: 12, K: 13, A: 1 };
-    const num = rankMap[rank] ?? parseInt(rank, 10);
-    console.log(`Rank: ${rank}, Numeric Value: ${num}`);
-
-    const sideCalced =
-      num <= 3 ? 0 : num <= 5 ? 2 : num <= 8 ? 3 : num <= 10 ? 4 : 0;
-    const centerCalced =
-      num === 1 || num === 5 || num === 9
-        ? [true]
-        : num === 2 || num === 8 || num === 10
-        ? [true, true]
-        : num === 3
-        ? [true, true, true]
-        : num === 7
-        ? [true, false]
-        : [];
-
-    return { side: sideCalced, center: centerCalced };
-  }
-
-  const { side: iconSideCount, center: iconCenterCount } = getIconColumnCounts(
-    card.rank
-  );
-
   return (
     <div className={styles.playingCardContainer} style={{ color: suitColour }}>
       <div className={styles.corner + " " + styles.topCorner}>
@@ -69,9 +73,9 @@ const PlayingCard = ({ card }: { card: PlayingCardType }) => {
         <div>{card.suit}</div>
       </div>
       <div className={styles.suitIconsContainer}>
-        <SideSuitIcons suitIcon={card.suit} iconCount={iconSideCount} />
-        <CenterSuitIcons suitIcon={card.suit} iconCount={iconCenterCount} />
-        <SideSuitIcons suitIcon={card.suit} iconCount={iconSideCount} />
+        <SideSuitIcons card={card} />
+        <CenterSuitIcons card={card} />
+        <SideSuitIcons card={card} />
       </div>
       <div className={styles.corner + " " + styles.bottomCorner}>
         <div>{card.rank}</div>
