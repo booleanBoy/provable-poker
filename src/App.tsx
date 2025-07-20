@@ -1,10 +1,14 @@
 import { useState } from "react";
+
 import "./App.css";
-import PlayerArea from "./components/PlayerArea/PlayerArea";
+import { shuffleNewDeck } from "./lib/lib";
+
+import GameTable from "./components/GameTable/GameTable";
+import FooterUI from "./components/FooterUI/FooterUI";
 
 function App() {
-  const [count, setCount] = useState(0);
-
+  const shuffledDeck = useState(() => shuffleNewDeck());
+  console.log("Shuffled Deck:", shuffledDeck);
   return (
     <div
       style={{
@@ -20,15 +24,8 @@ function App() {
       <div>
         <h1>Provable Poker</h1>
       </div>
-      <div>
-        <div>Table Container</div>
-        <PlayerArea />
-      </div>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
+      <GameTable />
+      <FooterUI />
     </div>
   );
 }
