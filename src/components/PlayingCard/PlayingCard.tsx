@@ -77,6 +77,16 @@ const CenterSuitIcons = ({ card }: { card: PlayingCardType }) => {
 
 const PlayingCard = ({ card }: { card: PlayingCardType }) => {
   const suitColour = card.suit === "♥" || card.suit === "♦" ? "red" : "black";
+  const hidden = true;
+  if (hidden)
+    return (
+      <div
+        className={styles.playingCardContainer}
+        style={{ color: suitColour }}
+      >
+        <div className={styles.cardBack}></div>
+      </div>
+    );
 
   return (
     <div className={styles.playingCardContainer} style={{ color: suitColour }}>
@@ -126,7 +136,7 @@ const CenterContent = ({ card }: { card: PlayingCardType }) => {
     return (
       <div className={styles.suitImageContainer}>
         <div
-          style={{ position: "absolute", left: 25, top: 35, fontSize: "30px" }}
+          style={{ position: "absolute", left: 28, top: 25, fontSize: "34px" }}
         >
           {card.suit}
         </div>
@@ -134,9 +144,9 @@ const CenterContent = ({ card }: { card: PlayingCardType }) => {
         <div
           style={{
             position: "absolute",
-            right: 25,
-            bottom: 35,
-            fontSize: "30px",
+            right: 28,
+            bottom: 25,
+            fontSize: "34px",
             transform: "rotate(180deg)",
           }}
         >
